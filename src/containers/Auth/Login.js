@@ -9,8 +9,28 @@ import { FormattedMessage } from "react-intl";
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      email: "",
+      password: "",
+      isShowPassword: false,
+    };
   }
-
+  handleOnChangeEmail = (event) => {
+    this.setState({
+      email: event.target.value,
+    });
+  };
+  handleOnChangePassword = (event) => {
+    this.setState({
+      password: event.target.value,
+    });
+  };
+  handleShowHidePassword = () => {
+    this.setState({
+      isShowPassword: !this.state.isShowPassword,
+    });
+  };
+  handleLogin = () => {};
   render() {
     return (
       <div className="login-background">
@@ -23,18 +43,40 @@ class Login extends Component {
                 type="text"
                 className="form-control "
                 placeholder="Enter your email"
+                value={this.state.email}
+                onChange={(event) => this.handleOnChangeEmail(event)}
               />
             </div>
             <div className="col-12 form-group login-input">
               <label htmlFor="">Password :</label>
-              <input
-                type="Password"
-                className="form-control"
-                placeholder="Enter your password"
-              />
+              <div className="login-input-password">
+                <input
+                  type={this.state.isShowPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Enter your password"
+                  value={this.state.password}
+                  onChange={(event) => this.handleOnChangePassword(event)}
+                />
+                <span onClick={() => this.handleShowHidePassword()}>
+                  <i
+                    className={
+                      this.state.isShowPassword
+                        ? "far fa-eye"
+                        : "far fa-eye-slash"
+                    }
+                  ></i>
+                </span>
+              </div>
             </div>
             <div className="col-12">
-              <button className="login-btn">Login</button>
+              <button
+                className="login-btn"
+                onClick={() => {
+                  this.handleLogin();
+                }}
+              >
+                Login
+              </button>
             </div>
             <div className="col-12 mt-2">
               <span className="login-fg-password">Forgot your password?</span>
