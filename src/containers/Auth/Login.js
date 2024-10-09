@@ -5,7 +5,7 @@ import * as actions from "../../store/actions";
 
 import "./Login.scss";
 import { FormattedMessage } from "react-intl";
-
+import { handleLoginApi } from "../../services/userService";
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -25,12 +25,15 @@ class Login extends Component {
       password: event.target.value,
     });
   };
+  handleLogin = async () => {
+    await handleLoginApi(this.state.email, this.state.password);
+  };
   handleShowHidePassword = () => {
     this.setState({
       isShowPassword: !this.state.isShowPassword,
     });
   };
-  handleLogin = () => {};
+
   render() {
     return (
       <div className="login-background">
