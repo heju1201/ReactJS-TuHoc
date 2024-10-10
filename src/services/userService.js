@@ -1,5 +1,5 @@
 import axios from "../axios";
-const handleLoginApi = (email, password) => {
-  return axios.post("/api/login");
+const handleLoginApi = (emailUser, passwordUser) => {
+  return axios.post("/api/login", { email: emailUser, password: passwordUser });
 };
 export { handleLoginApi };

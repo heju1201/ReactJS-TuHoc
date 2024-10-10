@@ -13,6 +13,7 @@ class Login extends Component {
       email: "",
       password: "",
       isShowPassword: false,
+      errMessage: "",
     };
   }
   handleOnChangeEmail = (event) => {
@@ -26,7 +27,29 @@ class Login extends Component {
     });
   };
   handleLogin = async () => {
-    await handleLoginApi(this.state.email, this.state.password);
+    this.setState({
+      errMessage: "",
+    });
+    try {
+      let data = await handleLoginApi(this.state.email, this.state.password);
+      if (data && data.errCode !== 0) {
+        this.setState({
+          errMessage: data.message,
+        });
+      }
+      if (data && data.errCode == 0) {
+        this.props.userLoginSuccess(data.user);
+        console.log("login succeeds");
+      }
+    } catch (e) {
+      if (e.response) {
+        if (e.response.data) {
+          this.setState({
+            errMessage: e.response.data.message,
+          });
+        }
+      }
+    }
   };
   handleShowHidePassword = () => {
     this.setState({
@@ -71,6 +94,9 @@ class Login extends Component {
                 </span>
               </div>
             </div>
+            <div className="col-12" style={{ color: "red" }}>
+              {this.state.errMessage}
+            </div>
             <div className="col-12">
               <button
                 className="login-btn"
@@ -107,9 +133,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (path) => dispatch(push(path)),
-    adminLoginSuccess: (adminInfo) =>
-      dispatch(actions.adminLoginSuccess(adminInfo)),
-    adminLoginFail: () => dispatch(actions.adminLoginFail()),
+
+    // userLoginFail: () => dispatch(actions.userLoginFail()),
+    userLoginSuccess: (userInfo) =>
+      dispatch(actions.userLoginSuccess(userInfo)),
   };
 };
 
