@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./UserManage.scss";
-import { getAllUsers, createNewUserService } from "../../services/userService";
+import {
+  getAllUsers,
+  createNewUserService,
+  deleteUserService,
+} from "../../services/userService";
 import ModalUser from "./ModalUser";
+import { emitter } from "../../utils/emitter";
 class UserManage extends Component {
   constructor(props) {
     super(props);
@@ -38,15 +43,29 @@ class UserManage extends Component {
   createNewUser = async (data) => {
     try {
       let response = await createNewUserService(data);
-      if (response && response.errCode !== 0) {
-        alert(response.message);
-      } else {
+      if (response && response.errCode === 0) {
         await this.getAllUsersFromReact();
         this.setState({
           isOpenModalUser: false,
         });
+        emitter.emit("EVENT_CLEAR_MODAL_DATA");
+      } else {
+        alert(response.message);
       }
       console.log("check response", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleDeleteUser = async (user) => {
+    try {
+      let response = await deleteUserService(user.id);
+      if (response && response.errCode === 0) {
+        await this.getAllUsersFromReact();
+      } else {
+        alert(response.errCode);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +125,11 @@ class UserManage extends Component {
                           <a type="button" className="btn_edit btn mx-3">
                             <i className="fas fa-pencil-alt"></i>
                           </a>
-                          <a type="button" className="btn_delete btn ">
+                          <a
+                            type="button"
+                            className="btn_delete btn"
+                            onClick={() => this.handleDeleteUser(item)}
+                          >
                             <i className="fas fa-trash"></i>
                           </a>
                         </td>
