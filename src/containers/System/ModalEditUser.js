@@ -3,10 +3,12 @@ import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { emitter } from "../../utils/emitter";
-class ModalUser extends Component {
+import _ from "lodash";
+class ModalEditUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: "",
       email: "",
       password: "",
       firstName: "",
@@ -16,46 +18,28 @@ class ModalUser extends Component {
       gender: "",
       roleId: "",
     };
-    this.listenToEmitter();
   }
-  listenToEmitter() {
-    emitter.on("EVENT_CLEAR_MODAL_DATA", () => {
+
+  componentDidMount() {
+    let user = this.props.currentUser;
+    if (user && !_.isEmpty(user)) {
       this.setState({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        address: "",
-        phoneNumber: "",
-        gender: "",
-        roleId: "",
+        id: user.id,
+        email: user.email,
+        password: "harCode",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        address: user.address,
+        phoneNumber: user.phoneNumber,
+        gender: user.gender,
+        roleId: user.roleId,
       });
-    });
+    }
   }
-  componentDidMount() {}
   toggle = () => {
     this.props.toggleFromParent();
   };
   handleOnChangeInput = (event, id) => {
-    //bad code.modify state
-    /**
-     * this.state = {
-     * email: "",
-     * password: "",
-     * }
-     * this.state.email === this.state["email"]
-     *
-     */
-    // this.state[id] = event.target.value;
-    // this.setState(
-    //   {
-    //     ...this.state,
-    //   },
-    //   () => {
-    //     console.log("check:", this.state);
-    //   }
-    // );
-
     //good code
     let copyState = { ...this.state };
     copyState[id] = event.target.value;
@@ -84,12 +68,11 @@ class ModalUser extends Component {
     return isValue;
   };
 
-  handleAddNewUser = () => {
+  handleSaveUser = () => {
     let isValid = this.checkValidate();
     if (isValid === true) {
-      //call api create modal
-      this.resetState();
-      this.props.createNewUser(this.state);
+      //call api edit user modal
+      this.props.editUser(this.state);
     }
   };
   render() {
@@ -99,7 +82,7 @@ class ModalUser extends Component {
         toggle={() => {
           this.toggle();
         }}
-        className={"modalUser"}
+        className={"modalEditUser"}
         size="lg"
         centered
       >
@@ -108,7 +91,7 @@ class ModalUser extends Component {
           <div className="container">
             <div className="row">
               <form action="/post-crud" method="POST" class="row g-3">
-                <div class="col-12 mt-3">Create a new User</div>
+                <div class="col-12 mt-3">Edit User</div>
                 <div class="col-md-6">
                   <label for="email" class="form-label">
                     Email
@@ -123,6 +106,7 @@ class ModalUser extends Component {
                       this.handleOnChangeInput(event, "email");
                     }}
                     value={this.state.email}
+                    disabled
                   ></input>
                 </div>
                 <div class="col-md-6">
@@ -139,6 +123,7 @@ class ModalUser extends Component {
                       this.handleOnChangeInput(event, "password");
                     }}
                     value={this.state.password}
+                    disabled
                   ></input>
                 </div>
                 <div class="col-md-6">
@@ -251,7 +236,7 @@ class ModalUser extends Component {
             color="primary"
             className="px-2"
             onClick={() => {
-              this.handleAddNewUser();
+              this.handleSaveUser();
             }}
           >
             Add new
@@ -279,4 +264,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEditUser);

@@ -6,8 +6,10 @@ import {
   getAllUsers,
   createNewUserService,
   deleteUserService,
+  editUserService,
 } from "../../services/userService";
 import ModalUser from "./ModalUser";
+import ModalEditUser from "./ModalEditUser";
 import { emitter } from "../../utils/emitter";
 class UserManage extends Component {
   constructor(props) {
@@ -15,6 +17,8 @@ class UserManage extends Component {
     this.state = {
       arrUsers: [],
       isOpenModalUser: false,
+      isOpenModalEditUser: false,
+      userEdit: {},
     };
   }
 
@@ -39,7 +43,11 @@ class UserManage extends Component {
       isOpenModalUser: !this.state.isOpenModalUser,
     });
   };
-
+  toggleUserEditModal = () => {
+    this.setState({
+      isOpenModalEditUser: !this.state.isOpenModalEditUser,
+    });
+  };
   createNewUser = async (data) => {
     try {
       let response = await createNewUserService(data);
@@ -70,6 +78,28 @@ class UserManage extends Component {
       console.log(error);
     }
   };
+  handleEditUser = async (user) => {
+    this.setState({
+      isOpenModalEditUser: true,
+      userEdit: user,
+    });
+  };
+
+  doEditUser = async (user) => {
+    try {
+      let response = await editUserService(user);
+      if (response && response.errCode === 0) {
+        await this.getAllUsersFromReact();
+        this.setState({
+          isOpenModalEditUser: false,
+        });
+      } else {
+        alert(response.errCode);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   /**Life Cycle
    *1. Run construct => init state
    *2. Did mount
@@ -85,6 +115,14 @@ class UserManage extends Component {
           toggleFromParent={this.toggleUserModal}
           createNewUser={this.createNewUser}
         />
+        {this.state.isOpenModalEditUser && (
+          <ModalEditUser
+            isOpen={this.state.isOpenModalEditUser}
+            toggleFromParent={this.toggleUserEditModal}
+            currentUser={this.state.userEdit}
+            editUser={this.doEditUser}
+          />
+        )}
         <div className="title text-center">Manage users with heju</div>
         <div className="mx-1">
           <button
@@ -122,7 +160,11 @@ class UserManage extends Component {
                         <td>{item.gender}</td>
                         <td>{item.phoneNumber}</td>
                         <td>
-                          <a type="button" className="btn_edit btn mx-3">
+                          <a
+                            type="button"
+                            className="btn_edit btn mx-3"
+                            onClick={() => this.handleEditUser(item)}
+                          >
                             <i className="fas fa-pencil-alt"></i>
                           </a>
                           <a
