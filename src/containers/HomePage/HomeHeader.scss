@@ -1,7 +1,7 @@
 .home-header-container {
-  height: 60px;
-  border: 1px red solid;
-  width : 100%;
+  height : 70px;
+  width  : 100%;
+  padding: 10px 40px;
 
   .home-header-content {
     width  : 100%;
@@ -10,10 +10,9 @@
 
     .left-content {
       width      : 25%;
-      border     : 1px greenyellow solid;
       display    : flex;
       align-items: center;
-      gap        : 15px;
+      gap        : 10px;
       cursor     : pointer;
 
       .header-logo {
@@ -23,14 +22,13 @@
       }
 
       i {
-        font-size: 30px;
+        font-size: 190%;
         color    : gray;
       }
     }
 
     .center-content {
       width          : 50%;
-      border         : 1px greenyellow solid;
       display        : flex;
       align-items    : center;
       justify-content: space-between;
@@ -45,10 +43,33 @@
 
     .right-content {
       width          : 25%;
-      border         : 1px greenyellow solid;
       display        : flex;
       align-items    : center;
-      justify-content: center;
+      justify-content: flex-end;
+      gap            : 5px;
+    }
+
+    .support {
+      margin-right: 30px;
+      cursor      : pointer;
+    }
+
+    .language-vn {
+      cursor: pointer;
+
+      &.active {
+        color: #ffc10e;
+
+      }
+    }
+
+    .language-en {
+      cursor: pointer;
+
+      &.active {
+        color: #ffc10e;
+
+      }
     }
   }
 }
@@ -57,18 +78,20 @@
   //   background: url("../../assets/bookingcareImages/header-background.avif")
   //     center center no-repeat;
   // or
-  background         : url("../../assets/bookingcareImages/home-background2.jpg");
-  background-size    : cover;
-  background-position: center;
-  background-repeat  : no-repeat;
-  height             : 480px;
-  display            : flex;
-  flex-direction     : column;
+  background-image     : url("../../assets/bookingcareImages/home-background2.jpg");
+  background-size      : cover;
+  background-position  : center;
+  background-repeat    : no-repeat;
+  height               : 480px;
+  display              : flex;
+  flex-direction       : column;
+  background-position-y: top;
+
 
   .banner-top {
-    border     : 1px red solid;
-    height     : 50%;
-    padding-top: 15px;
+    background-image: linear-gradient(rgba(126, 126, 126, 0.25), rgba(255, 255, 255, 0.1));
+    height          : 65%;
+    padding-top     : 15px;
 
     .banner-title1 {
       font-size     : 30px;
@@ -85,11 +108,10 @@
       color         : white;
       text-transform: uppercase;
       text-shadow   : 1px 1px 1px #333;
-      margin-bottom : 15px;
+      margin-bottom : 55px;
     }
 
     .banner-search {
-      border          : 1px red solid;
       display         : flex;
       align-items     : center;
       justify-content : center;
@@ -115,8 +137,11 @@
   }
 
   .banner-bot {
-    border: 1px green solid;
-    height: 50%;
+    height          : 35%;
+    display         : flex;
+    align-items     : flex-end;
+    justify-content : center;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 09), rgba(255, 255, 255, 1));
 
     .banner-options {
       display        : flex;
@@ -125,7 +150,6 @@
       gap            : 40px;
 
       .options-child {
-        border: 1px violet solid;
         width : 100px;
         cursor: pointer;
 
