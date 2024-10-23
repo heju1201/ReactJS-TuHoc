@@ -55,20 +55,32 @@
     }
 
     .language-vn {
-      cursor: pointer;
+      cursor : pointer;
+      opacity: 0.1;
 
       &.active {
-        color: #ffc10e;
+        opacity: 1;
+        color  : #ffc10e;
 
+      }
+
+      &:hover {
+        opacity: 1;
       }
     }
 
     .language-en {
-      cursor: pointer;
+      cursor : pointer;
+      opacity: 0.1;
 
       &.active {
-        color: #ffc10e;
+        opacity: 1;
+        color  : #ffc10e;
 
+      }
+
+      &:hover {
+        opacity: 1;
       }
     }
   }
