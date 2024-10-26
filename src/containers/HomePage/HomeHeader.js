@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import {LANGUAGES} from '../../utils/constant'
 import { changeLanguageApp } from "../../store/actions";
 import { dispatch } from "../../redux";
-class Header extends Component {
+class HomeHeader extends Component {
   changeLanguage = (language) =>{
     this.props.changeLanguageAppRedux(language)
   }
@@ -127,4 +127,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
